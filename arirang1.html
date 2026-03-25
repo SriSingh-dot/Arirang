@@ -1,4 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARIRANG</title>
+<link rel="icon" type="image/png" href="bts.png">
 
 
 
 
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:black;
+  overflow:hidden;}
+.slideshow{
+  position:relative;
+  width:90%;
+  max-width:1000px;
+  height:90vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;}
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  opacity:0;
+  transform:scale(1);
+  transition: opacity 1.5s ease, transform 2s ease;}
+.slide.active{
+  opacity:1;}
+.slide.zoom-out{
+  transform:scale(1.3);
+  opacity:0;
+  filter:blur(3px);}
+.final-btn{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+  padding:30px 80px;
+  font-size:60px;
+  font-weight:900;
+  letter-spacing:6px;
+  color:#3a0000;
+  background:rgba(0,0,0,0.4);
+  border:3px solid rgba(255,255,255,0.774);
+  border-radius:60px;
+  backdrop-filter:blur(12px);
+  box-shadow:
+    0 0 25px rgba(255,255,255,0.4),
+    0 0 60px rgba(58,0,0,0.8);
+  text-decoration:none;
+  display:inline-block;
+  transition:all 1.5s ease;
+  z-index:10;
+}
+.final-btn.show{
+  opacity:1;
+  pointer-events:auto;
+  transform:scale(1.15);}
+.glitch-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  opacity:0;
+  pointer-events:none;
+  z-index:999;
+  overflow:hidden;}
+.glitch-layer{
+  position:absolute;
+  width:100%;
+  height:100%;
+  mix-blend-mode:multiply; 
+  opacity:0;}
+.red{ background:rgba(56, 6, 6, 0.8); }
+.blue{ background:rgba(26, 15, 15, 0.9); } 
+.scanlines{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.05) 0px,
+    rgba(0, 0, 0, 0.521) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  opacity:0;}
+.bars{
+  position:absolute;
+  width:100%;
+  height:100%;
+  opacity:0;}
+.glitch-active{
+  animation: glitchMain 0.7s infinite;}
+.glitch-active .red{
+  animation: glitchRed 0.4s infinite;
+  opacity:1;}
+.glitch-active .blue{
+  animation: glitchBlue 0.4s infinite;
+  opacity:1;}
+.glitch-active .scanlines{
+  opacity:1;}.glitch-active .bars{
+  opacity:1;}
+.glitch-active .bars::before,
+.glitch-active .bars::after{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:20%;
+  background:rgba(255,0,0,0.2);
+  animation: glitchBars 0.3s infinite;}
+.bars::after{
+  top:60%;}
+@keyframes glitchMain{
+  0%{opacity:0;}
+  20%{opacity:1;}
+  40%{opacity:0.4;}
+  60%{opacity:1;}
+  100%{opacity:1;}}
+@keyframes glitchRed{
+  0%{transform:translate(0);}
+  50%{transform:translate(-20px,10px);}
+  100%{transform:translate(0);}}
+@keyframes glitchBlue{
+  0%{transform:translate(0);}
+  50%{transform:translate(20px,-10px);}
+  100%{transform:translate(0);}}
+@keyframes glitchBars{
+  0%{transform:translateX(0);}
+  50%{transform:translateX(-50px);}
+  100%{transform:translateX(0);}}
+@keyframes shake{
+  0%{transform:translate(0);}
+  25%{transform:translate(5px,-5px);}
+  50%{transform:translate(-5px,5px);}
+  75%{transform:translate(5px,5px);}
+  100%{transform:translate(0);}}</style>
+</head>
+
+
+
+
+
+
+
+<body>
+<div class="slideshow">
+  <img src="a2.jpg" class="slide active">
+  <img src="a3.jpg" class="slide">
+  <img src="a4.jpg" class="slide">
+  <img src="a5.jpg" class="slide">
+  <img src="a6.jpg" class="slide">
+  <img src="a7.jpg" class="slide">
+  <img src="a8.jpg" class="slide">
+  <img src="a9.jpg" class="slide">
+  <img src="b1.jpg" class="slide">
+  <img src="b2.jpg" class="slide">
+  <img src="b3.jpg" class="slide">
+  <img src="b4.jpg" class="slide">
+  <a href="first.html" class="final-btn">ARIRANG</a></div>
+<div class="glitch-overlay">
+  <div class="glitch-layer red"></div>
+  <div class="glitch-layer blue"></div>
+  <div class="scanlines"></div>
+  <div class="bars"></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let button = document.querySelector(".final-btn");
+let overlay = document.querySelector(".glitch-overlay");
+let index = 0;
+let interval;
+function showNextSlide(){  let current = slides[index];
+  current.classList.add("zoom-out");
+  setTimeout(()=>{
+    current.classList.remove("active","zoom-out");
+    index++;
+    if(index >= slides.length){
+      clearInterval(interval);
+      setTimeout(()=> button.classList.add("show"),1000);
+      return;    }
+    slides[index].classList.add("active");
+  },1500);}
+setTimeout(()=>{
+  interval = setInterval(showNextSlide,3000);
+},2000);
+button.addEventListener("click", function(e){
+  e.preventDefault();
+  button.style.display = "none";
+  overlay.classList.add("glitch-active");
+  document.body.style.animation = "shake 0.25s infinite";
+  let glitchPics = [
+    slides[0],
+    slides[2],
+    slides[4],
+    slides[7],
+    slides[10]  ];
+  let i = 0;
+  let glitchInterval = setInterval(()=>{
+    slides.forEach(s => s.classList.remove("active"));
+    glitchPics[i].classList.add("active");
+    i = (i + 1) % glitchPics.length;
+  },500);
+  setTimeout(()=>{
+    clearInterval(glitchInterval);
+    window.location.href = "first.html";
+  },5000);});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
