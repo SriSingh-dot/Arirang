@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARIRANG</title>
+<link rel="icon" type="image/png" href="bts.png">
+
+
+
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: radial-gradient(circle at center, #3a0000, #120000 70%);}
+.wrapper{
+  padding:40px;
+}
+.hint{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  opacity:0.7;
+  letter-spacing:3px;
+}
+img{
+  width:75%;
+  max-width:900px;
+  display:block;
+  margin:auto;
+  border:18px solid rgba(255, 255, 255, 0.774);
+  outline:6px solid #7a0000;
+  box-shadow:
+    inset 0 0 15px rgba(0,0,0,0.6),
+    0 10px 30px rgba(0,0,0,0.9),
+    0 0 40px rgba(255,0,0,0.5),
+    0 0 80px rgba(255,0,0,0.3);
+  border-radius:14px;}
+.confetti{
+  position:fixed;
+  top:-10px;
+  width:6px;
+  height:6px;
+  background:rgba(255,255,255,0.8);
+  animation: fall linear infinite;}
+@keyframes fall{
+  0%{
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  100%{
+    transform: translateY(110vh) translateX(50px) rotate(360deg);
+  }
+}
+.glitch-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  opacity:0;
+  pointer-events:none;
+  z-index:999;
+  overflow:hidden;
+}
+
+
+.glitch-layer{
+  position:absolute;
+  width:100%;
+  height:100%;
+  mix-blend-mode:screen;
+  opacity:0;}
+.red{
+  background:rgba(139, 15, 15, 0.8);}
+.blue{
+  background:rgba(0,0,0,0.9);}
+.scanlines{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.05) 0px,
+    rgba(255,255,255,0.05) 2px,
+    transparent 2px,
+    transparent 4px  );  opacity:0;}
+
+
+
+
+
+
+.glitch-active{
+  animation: glitchMain 0.7s forwards;
+}
+.glitch-active .red{
+  animation: glitchRed 0.7s infinite;
+}
+.glitch-active .blue{
+  animation: glitchBlue 0.7s infinite;
+}
+.glitch-active .scanlines{
+  opacity:1;}
+
+
+
+
+
+
+@keyframes glitchMain{
+  0%{opacity:0;}
+  20%{opacity:1;}
+  40%{opacity:0.4;}
+  60%{opacity:1;}
+  100%{opacity:1;}
+}
+@keyframes glitchRed{
+  0%{transform:translate(0);}
+  20%{transform:translate(-15px,8px);}
+  40%{transform:translate(15px,-8px);}
+  60%{transform:translate(-8px,15px);}
+  80%{transform:translate(10px,-5px);}
+  100%{transform:translate(0);}}
+@keyframes glitchBlue{
+  0%{transform:translate(0);}
+  20%{transform:translate(20px,-10px);}
+  40%{transform:translate(-20px,10px);}
+  60%{transform:translate(10px,-20px);}
+  80%{transform:translate(-10px,5px);}
+  100%{transform:translate(0);}}
+@keyframes shake{
+  0%{transform:translate(0);}
+  25%{transform:translate(5px,-5px);}
+  50%{transform:translate(-5px,5px);}
+  75%{transform:translate(5px,5px);}
+  100%{transform:translate(0);}}
+
+
+
+
+
+
+
+
+.bars{
+  position:absolute;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  opacity:0;}
+.glitch-active .bars{
+  opacity:1;}
+.glitch-active .bars::before,
+.glitch-active .bars::after{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:20%;
+  background:rgba(255,0,0,0.2);
+  animation: glitchBars 0.3s infinite;}
+.bars::after{
+  top:60%;
+  animation-delay:0.15s;}
+@keyframes glitchBars{
+  0%{transform:translateX(0);}
+  50%{transform:translateX(-50px);}
+  100%{transform:translateX(0);}}
+</style>
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <div class="wrapper"> <img src="a1.jpg">
+  </div><p class="hint">Press "Enter" key </p>
+<!--glitchhhhh-->
+ <div class="glitch-overlay">
+  <div class="glitch-layer red"></div>
+  <div class="glitch-layer blue"></div>
+  <div class="scanlines"></div>
+  <div class="bars"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+for(let i=0;i<60;i++){
+  let p=document.createElement("div");
+  p.className="confetti";
+  p.style.left=Math.random()*100+"vw";
+  p.style.background = Math.random() > 0.5 
+  ? "rgba(255,255,255,0.8)" : "rgba(255,0,0,0.8)";
+  p.style.animationDuration=(8 + Math.random()*6)+"s";
+  p.style.opacity=Math.random();
+  document.body.appendChild(p);
+}
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    let overlay = document.querySelector(".glitch-overlay");
+    overlay.classList.add("glitch-active");
+    document.body.style.animation = "shake 0.3s";
+    setTimeout(()=>{
+      window.location.href = "arirang.html";
+    }, 700);}});</script>
+
+
+
+  
+
+
+
+</body>
+</html>
