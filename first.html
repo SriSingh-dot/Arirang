@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARIRANG</title>
+<link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="bts.png">
+
+
+
+
+
+
+
+
+
+
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#050000;}
+.next-btn{
+  display:flex;
+  justify-content:center;
+  margin:60px 0 40px;}
+.next-btn a{
+  text-decoration:none;
+  font-family:'Allura', cursive;
+  font-size:28px;
+  padding:14px 40px;
+  border-radius:30px;
+  color:#b6abab;
+  background:linear-gradient(45deg,#5a0000,#a00000);
+  box-shadow:
+    0 0 20px rgba(122, 10, 10, 0.5),
+    0 0 40px rgba(120,0,0,0.6);
+  transition:0.3s;
+}
+.next-btn a:hover{
+  transform:scale(1.1);
+  box-shadow:
+    0 0 30px rgba(94, 2, 2, 0.8),
+    0 0 60px rgba(112, 5, 5, 0.9);}
+.wrapper{
+  max-width:1200px;
+  margin:20px auto;
+  padding:30px;
+  border-radius:20px;
+  background: radial-gradient(circle at center, #3a0000, #120000 70%);
+  color:rgba(255,255,255,0.8);
+  position:relative;
+  z-index:10;
+}
+h1{
+  text-align:center;
+  font-family:'Allura', cursive;
+  font-size:60px;
+  margin-bottom:40px;
+  color:rgba(255,255,255,0.8);
+  letter-spacing:4px;
+}
+.container{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:20px;
+}
+.card{
+  background:#0d0000;
+  border-radius:15px;
+  padding:12px;
+  text-align:center;
+  max-width:250px;
+  margin:auto;
+  box-shadow:
+    0 0 15px rgba(255,0,0,0.12),
+    inset 0 0 8px rgba(0,0,0,0.6);
+  transition:0.3s;
+}
+.controls button:hover{
+  transform:scale(1.15);
+  background:#5a0000;
+  box-shadow:
+    0 0 20px rgba(230, 216, 32, 0.6);}
+.card img{
+  width:100%;
+  height:auto;
+  object-fit:contain;
+  border-radius:10px;}
+.song-name{
+  margin-top:10px;
+  font-weight:bold;
+  font-size:15px;}
+.meaning{
+  margin-top:10px;
+  font-size:13px;
+  line-height:1.4;
+  min-height:60px;
+  padding:8px;
+  border-radius:10px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.8);}
+.mini-player{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:320px;
+  border-radius:18px;
+  overflow:hidden;
+  background:#0d0000;
+  box-shadow:0 0 15px rgba(255,0,0,0.15);
+  animation: glowBeat 2s infinite;
+  z-index:999;
+}
+@keyframes glowBeat{
+  0%{ box-shadow:0 0 15px rgba(255,0,0,0.15); }
+  50%{
+    box-shadow:
+      0 0 35px rgba(255,0,0,0.45),
+      0 0 70px rgba(120,0,0,0.35);
+  }
+  100%{ box-shadow:0 0 15px rgba(255,0,0,0.15); }
+}
+#spotifyPlayer{
+  width:100%;
+  height:80px;
+  border:none;}
+.controls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+  padding:10px;
+}
+.disc{
+  width:26px;
+  height:26px;
+  animation: spin 3s linear infinite;}
+@keyframes spin{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }}
+.card.active{
+  transform:scale(1.05);
+  box-shadow:
+    0 0 25px rgba(255,0,0,0.5),
+    0 0 60px rgba(120,0,0,0.6),
+    inset 0 0 10px rgba(0,0,0,0.8);
+  border:1px solid rgba(255,0,0,0.4);}
+.controls button{
+  background:#3a0000;
+  color:rgba(255,255,255,0.8);
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:16px;
+  box-shadow:
+    0 0 10px rgba(255,0,0,0.4);
+  transition:0.2s;}
+.sparkle{
+  position:fixed;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:20;
+  animation: floatSpark 8s linear infinite;}
+.sparkle.red{
+  background:rgba(255,0,0,0.8);
+  box-shadow:0 0 8px rgba(255,0,0,0.8);}
+.sparkle.gold{
+  background:rgba(255,215,0,0.9);
+  box-shadow:0 0 10px rgba(255,215,0,0.9);
+}
+@keyframes floatSpark{
+  0%{
+    transform: translateY(100vh) translateX(0);
+    opacity:0;  }
+  10%{ opacity:1; }
+  90%{ opacity:1; }
+  100%{
+    transform: translateY(-10vh) translateX(var(--drift));
+    opacity:0;
+  }}
+</style>
+</head>
+
+
+
+
+
+
+
+
+<body>
+<div class="wrapper">
+<h1>Playlist</h1>
+<div class="container">
+<div class="card" data-song="2rKkfc4VZ74FQDc1FF1Zo6"><img src="b5.jpg"><div class="song-name">Body to Body</div><div class="meaning">A song about human connection and unity, encouraging people to put their phones away and enjoy the moment.</div></div>
+<div class="card" data-song="20dAJsyno9ZoBLJtqgQnUI"><img src="b5.jpg"><div class="song-name">Hooligan</div><div class="meaning">This song shows raw energy and chaos, like not caring what people think and just being yourself loudly.</div></div>
+<div class="card" data-song="5tg21NdePCn5m8F9BXOEeJ"><img src="b5.jpg"><div class="song-name">Aliens</div><div class="meaning">It talks about feeling like you don’t belong, like you are different from everyone else.</div></div>
+<div class="card" data-song="0KmrKOdScRDVYwWS8hkkdv"><img src="b5.jpg"><div class="song-name">FYA</div><div class="meaning">FYA means fire, showing confidence and strong energy without caring about limits.</div></div>
+<div class="card" data-song="3bmpXHVie1GTy37OkXJ7Vc"><img src="b5.jpg"><div class="song-name">2.0</div><div class="meaning">It is about becoming a new version of yourself and leaving the past behind.</div></div>
+<div class="card" data-song="3plyGpDgzfrnZbpElpfioV"><img src="b5.jpg"><div class="song-name">No.29</div><div class="meaning">This song feels like a personal number or identity, showing struggle and finding your own place.</div></div>
+<div class="card" data-song="68lbSrXDORS51pmyjZv712"><img src="b5.jpg"><div class="song-name">SWIM</div><div class="meaning">A song about drowning in emotions but still trying to move forward.</div></div>
+<div class="card" data-song="3VegC0PZiHjGxb80DER8XU"><img src="b5.jpg"><div class="song-name">Merry Go Round</div><div class="meaning">It shows life going in circles again and again, like repeating the same feelings.</div></div>
+<div class="card" data-song="4B4Q7zfd0aHcuhQBfCRnH5"><img src="b5.jpg"><div class="song-name">Normal</div><div class="meaning">This talks about what being normal really means and how everyone feels different inside.</div></div>
+<div class="card" data-song="2IFND3phjzIG1RcPnHh2hP"><img src="b5.jpg"><div class="song-name">Like Animals</div><div class="meaning">It shows raw instincts and emotions, acting freely without rules like animals.</div></div>
+<div class="card" data-song="0b61A7v9agI08BG21jJPQ9"><img src="b5.jpg"><div class="song-name">they don't know 'bout us</div><div class="meaning">It shows a connection others don’t understand, something private and strong between people.</div></div>
+<div class="card" data-song="6s3w7SUVtmm68Bw5KrKMh0"><img src="b5.jpg"><div class="song-name">One More Night</div><div class="meaning">A feeling of wanting just one more moment before everything ends.</div></div>
+<div class="card" data-song="1XpVhaI4HzWrhRWIpdfyJB"><img src="b5.jpg"><div class="song-name">Please</div><div class="meaning">It feels like asking someone not to leave and holding onto them emotionally.</div></div>
+<div class="card" data-song="1ZNolq7VI7efGlh2hb2VVr"><img src="b5.jpg"><div class="song-name">Into the Sun</div><div class="meaning">It shows moving forward towards something bright even after struggles.</div></div>
+</div></div>
+
+
+
+
+
+<div class="mini-player">
+<iframe id="spotifyPlayer"
+src="https://open.spotify.com/embed/track/68lbSrXDORS51pmyjZv712"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+<div class="controls">
+<img src="disc.png" class="disc">
+<button onclick="prevSong()">⏮</button>
+<button onclick="nextSong()">⏭</button>
+</div></div>
+
+
+
+
+
+
+
+
+
+<script>
+let songs = [
+"2rKkfc4VZ74FQDc1FF1Zo6",
+"20dAJsyno9ZoBLJtqgQnUI",
+"5tg21NdePCn5m8F9BXOEeJ",
+"0KmrKOdScRDVYwWS8hkkdv",
+"3bmpXHVie1GTy37OkXJ7Vc",
+"3plyGpDgzfrnZbpElpfioV",
+"68lbSrXDORS51pmyjZv712",
+"3VegC0PZiHjGxb80DER8XU",
+"4B4Q7zfd0aHcuhQBfCRnH5",
+"2IFND3phjzIG1RcPnHh2hP",
+"0b61A7v9agI08BG21jJPQ9",
+"6s3w7SUVtmm68Bw5KrKMh0",
+"1XpVhaI4HzWrhRWIpdfyJB",
+"1ZNolq7VI7efGlh2hb2VVr"
+];
+let index = 6;
+let player = document.getElementById("spotifyPlayer");
+function nextSong(){
+index = (index + 1) % songs.length;
+loadSong();}
+function prevSong(){
+index = (index - 1 + songs.length) % songs.length;
+loadSong();
+}
+let cards = document.querySelectorAll(".card");
+function highlightCard(){
+  cards.forEach(card => card.classList.remove("active"));
+  cards.forEach(card => {
+    if(card.dataset.song === songs[index]){
+      card.classList.add("active");
+    }  });}
+function loadSong(){
+  player.src = "https://open.spotify.com/embed/track/" + songs[index];
+  highlightCard();}
+highlightCard();
+for(let i=0;i<40;i++){
+  let s = document.createElement("div");
+  s.classList.add("sparkle");
+  if(Math.random() > 0.5){
+    s.classList.add("red");  } else {
+    s.classList.add("gold");  }
+  s.style.left = Math.random()*100 + "vw";
+  s.style.opacity = Math.random();
+  s.style.setProperty('--drift', (20 + Math.random()*60) + 'px');
+  document.body.appendChild(s);
+  s.style.animationDelay = Math.random() * 8 + "s";
+}</script>
+
+
+
+<div class="next-btn">
+  <a href="second.html">Next</a></div>
+
+
+
+
+</body>
+</html>

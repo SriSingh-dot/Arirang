@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARIRANG</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="bts.png">
+<style>
+*{margin:0; padding:0; box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:Arial, sans-serif;
+  overflow-x:hidden;
+  background:#000;}
+.section{
+  height:100vh;
+  width:100vw;
+  position:relative;
+  background: radial-gradient(circle at center, #3a0000, #120000 70%);
+  overflow:hidden;}
+.frame{
+  position:fixed;
+  top:25px;
+  left:25px;
+  right:25px;
+  bottom:25px;
+  pointer-events:none;
+  z-index:50;
+}
+.frame::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border:2px solid rgba(255,255,255,0.5);
+  border-radius:12px;}
+.frame::after{
+  content:"";
+  position:absolute;
+  inset:10px;
+  border:1px solid rgba(255,255,255,0.3);
+  border-radius:10px;
+}
+.photo{
+  position:absolute;
+  max-width:220px;
+  border-radius:12px;
+  box-shadow:0 0 25px rgba(255,0,0,0.5);
+  transition: transform 0.4s, z-index 0s;
+  cursor:pointer;}
+.photo:hover{
+  transform: scale(1.2) rotate(0deg);
+  z-index:100;
+}
+.confetti{
+  position:fixed;
+  top:-10px;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:999;
+  animation: fall linear infinite;
+  box-shadow:0 0 6px rgba(255,0,0,0.6),0 0 10px rgba(255,255,255,0.3);}
+@keyframes fall{
+  0%{transform: translateY(0) translateX(0) rotate(0deg); opacity:0;}
+  10%{opacity:1;}
+  100%{transform: translateY(110vh) translateX(50px) rotate(360deg); opacity:0;}
+}
+</style></head>
+
+
+
+
+
+
+
+
+<body>
+<div class="section" id="page1"></div>
+<div class="section" id="page2"></div>
+<div class="frame"></div>
+
+
+
+
+
+
+
+<script>
+const photos = [];
+for(let i=1;i<=20;i++){ photos.push(`bts${i}.jpg`); }
+function scatterImages(pageId){
+  const page = document.getElementById(pageId);
+  photos.forEach(src=>{
+    const img = document.createElement('img');
+    img.src = src;
+    img.className='photo';
+    const maxX = window.innerWidth - 150;
+    const maxY = window.innerHeight - 150;
+    const x = Math.random()*(maxX-50)+25;
+    const y = Math.random()*(maxY-50)+25;
+    img.style.left = x+'px';
+    img.style.top = y+'px';
+    const rot = Math.random()*40-20; // -20 to +20deg
+    img.style.transform = `rotate(${rot}deg)`;
+    page.appendChild(img);
+  });}
+scatterImages('page1');
+scatterImages('page2');
+for(let i=0;i<50;i++){
+  const c=document.createElement('div');
+  c.className='confetti';
+  c.style.left=Math.random()*window.innerWidth+'px';
+  c.style.animationDuration=2+Math.random()*3+'s';
+  c.style.width=4+Math.random()*4+'px';
+  c.style.height=4+Math.random()*4+'px';
+  document.body.appendChild(c);
+}</script>
+
+
+
+
+
+
+</body>
+</html>
